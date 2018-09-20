@@ -1,6 +1,7 @@
 #pragma once
 class Node
 {
+	friend class List;
 private:
 	int data;
 	int state;

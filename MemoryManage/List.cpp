@@ -9,6 +9,31 @@
 using namespace std;
 
 
+int List::sort()
+{
+	Node* currentNode = head;
+	Node* orial = new Node;
+	while (currentNode->next != tail) {
+		if (currentNode->state == EMPTY && currentNode->next->state == EMPTY) {
+			orial = currentNode;
+			currentNode = currentNode->next;
+			deleteNode(orial);
+		}
+		else {
+			currentNode = currentNode->next;
+		}
+	}
+	return 0;
+}
+
+void List::deleteNode(Node *orial)
+{
+	orial->next->data = orial->next->data + orial->data;
+	orial->before->next = orial->next;
+	orial->next->before = orial->before;
+	free(orial);
+}
+
 List::List(int MAX)
 {
 	Node* memoryNode = new Node;

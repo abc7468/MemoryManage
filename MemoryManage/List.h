@@ -13,12 +13,13 @@ class List
 private:
 	Node* head;
 	Node* tail;
-public:
-	int myalloc(int);
-	int myfree(int);
-	int sort();
+protected:
 
-	//test
+	int sort();
+	void deleteNode(Node*);
+	
+public:
+	List() {};
 	List(int);
 	~List();
 };

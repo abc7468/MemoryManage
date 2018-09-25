@@ -3,16 +3,11 @@
 
 
 
-int Manage::myalloc(int size)
-{
 
-	Node* find = search(size);
-	
-}
-
-Manage::Manage(int MAX)
+void Manage::myalloc(int size)
 {
-	List manager = List(MAX);
+	List::alloc(size);
+	List::display();
 }
 
 Manage::~Manage()

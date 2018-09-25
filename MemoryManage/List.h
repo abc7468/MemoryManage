@@ -19,7 +19,8 @@ protected:
 	Node* search(int);
 	int sort();
 	void deleteNode(Node*);
-	
+	void alloc(int);
+	void display();
 public:
 	List() {};
 	List(int);

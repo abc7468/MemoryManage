@@ -3,8 +3,8 @@
 class Manage : public List
 {
 public:
-	int myalloc(int);
-	Manage(int);
+	Manage(int size) :List(size) {};
+	void myalloc(int);
 	~Manage();
 };
 

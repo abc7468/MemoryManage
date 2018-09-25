@@ -11,11 +11,11 @@ using namespace std;
 
 Node* List::search(int size)
 {
-	int check = 1;
+	
 	Node* current = head;
-	while (check == 1) {
+	while (current->state != EMPTY) {
 		current = current->next;
-		if (current->state == EMPTY && current->data>=size) {
+		if (current->state == EMPTY && (current->data)>=size) {
 			return current;
 		}
 
@@ -47,6 +47,28 @@ void List::deleteNode(Node *orial)
 	free(orial);
 }
 
+void List::alloc(int size)
+{
+	Node* allocNode = new Node;
+	allocNode->data = size;
+	allocNode->state = FULL;
+	Node* findNode = search(size);
+	findNode->before->next = allocNode;
+	allocNode->before = findNode->before;
+	findNode->before = allocNode;
+	allocNode->next = findNode;
+	
+}
+
+void List::display()
+{
+	Node* currentNode = head->next;
+	while (currentNode->state != TAIL) {
+		cout << "데이터 크기 : " << currentNode->data << "상태 : " << currentNode->state << endl;
+		currentNode = currentNode->next;
+	}
+}
+
 List::List(int MAX)
 {
 	Node* memoryNode = new Node;
@@ -58,7 +80,7 @@ List::List(int MAX)
 	head->next = memoryNode;
 	memoryNode->before = head;
 	memoryNode->data = MAX;
-	memoryNode->state = FULL;
+	memoryNode->state = EMPTY;
 	memoryNode->next = tail;
 	tail->before = memoryNode;
 	tail->data = INT_MAX;

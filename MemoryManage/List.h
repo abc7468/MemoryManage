@@ -1,5 +1,5 @@
 #pragma once
-class Node
+class Node 
 {
 	friend class List;
 private:
@@ -8,13 +8,15 @@ private:
 	Node* next;
 	Node* before;
 };
+
+
 class List
 {
 private:
 	Node* head;
 	Node* tail;
 protected:
-
+	Node* search(int);
 	int sort();
 	void deleteNode(Node*);
 	

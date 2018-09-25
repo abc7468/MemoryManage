@@ -9,6 +9,19 @@
 using namespace std;
 
 
+Node* List::search(int size)
+{
+	int check = 1;
+	Node* current = head;
+	while (check == 1) {
+		current = current->next;
+		if (current->state == EMPTY && current->data>=size) {
+			return current;
+		}
+
+	}
+}
+
 int List::sort()
 {
 	Node* currentNode = head;

@@ -4,7 +4,7 @@ class Manage : public List
 {
 public:
 	Manage(int size) :List(size) {};
-	void myalloc(int);
+	int myalloc(int);
 	~Manage();
 };
 

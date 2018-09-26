@@ -4,11 +4,11 @@
 using namespace std;
 
 int main() {
-	
-	Manage* a = new Manage(100);
-	a->myalloc(10);
-	a->myalloc(20);
-	a->myalloc(30);
-	a->myalloc(40);
+	int a, b, c, d;
+	Manage* manager = new Manage(100);
+	a = manager->myalloc(10);
+	b = manager->myalloc(20);
+	c = manager->myalloc(30);
+	d = manager->myalloc(40);
 
 }

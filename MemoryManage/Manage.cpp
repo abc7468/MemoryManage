@@ -4,10 +4,11 @@
 
 
 
-void Manage::myalloc(int size)
+int Manage::myalloc(int size)
 {
-	List::alloc(size);
+	int addr = List::alloc(size);
 	List::display();
+	return addr;
 }
 
 Manage::~Manage()

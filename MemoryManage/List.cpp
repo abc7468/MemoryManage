@@ -9,20 +9,22 @@
 using namespace std;
 
 
-Node* List::search(int size)
+Node* List::search(int size) // 저장 가능한 메모리가 있는지 찾아주고 그 주소를 반환해 주는 함수
 {
 	
 	Node* current = head;
-	while (current->state != EMPTY) {
+	while (current->state != TAIL) {
 		current = current->next;
 		if (current->state == EMPTY && (current->data)>=size) {
 			return current;
 		}
-
 	}
+	cout << "저장할 수 있는 메모리가 없습니다." << endl;
+
+	return 0;
 }
 
-int List::sort()
+int List::sort() // 이어진 EMPTYNODE를 합쳐주는 함수
 {
 	Node* currentNode = head;
 	Node* orial = new Node;
@@ -39,34 +41,51 @@ int List::sort()
 	return 0;
 }
 
-void List::deleteNode(Node *orial)
+void List::deleteNode(Node *orial) //sort함수에서 낙동강오리알Node를 Free시켜주는 함수
 {
 	orial->next->data = orial->next->data + orial->data;
 	orial->before->next = orial->next;
 	orial->next->before = orial->before;
-	free(orial);
+	delete orial;
+	orial = nullptr;
 }
 
-void List::alloc(int size)
+int List::alloc(int size) // alloc역할
 {
+	
 	Node* allocNode = new Node;
 	allocNode->data = size;
 	allocNode->state = FULL;
 	Node* findNode = search(size);
+	findNode->data = (findNode->data) - size;
 	findNode->before->next = allocNode;
 	allocNode->before = findNode->before;
 	findNode->before = allocNode;
 	allocNode->next = findNode;
+	int addr = findAddr(findNode, size);
+	return addr;
 	
+}
+
+int List::findAddr(Node *findNode, int size)
+{
+	int addr = 0;
+	Node* currentNode = head->next;
+	while (currentNode != findNode) {
+		addr = addr + (currentNode->data);
+		currentNode = currentNode->next;
+	}
+	return addr;
 }
 
 void List::display()
 {
 	Node* currentNode = head->next;
 	while (currentNode->state != TAIL) {
-		cout << "데이터 크기 : " << currentNode->data << "상태 : " << currentNode->state << endl;
+		cout << "데이터 크기 : " << currentNode->data << "상태 : " << currentNode->state << "-> ";
 		currentNode = currentNode->next;
 	}
+	cout << endl;
 }
 
 List::List(int MAX)

@@ -18,9 +18,11 @@ private:
 protected:
 	Node* search(int);
 	int sort();
+	int alloc(int);
+	int findAddr(Node*, int);
 	void deleteNode(Node*);
-	void alloc(int);
 	void display();
+
 public:
 	List() {};
 	List(int);

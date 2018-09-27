@@ -9,7 +9,7 @@
 using namespace std;
 
 
-Node* List::search(int size) // 저장 가능한 메모리가 있는지 찾아주고 그 주소를 반환해 주는 함수
+Node* List::fSearch(int size) // 저장 가능한 메모리가 있는지 찾아주고 그 주소를 반환해 주는 함수
 {
 	
 	Node* current = head;
@@ -19,7 +19,7 @@ Node* List::search(int size) // 저장 가능한 메모리가 있는지 찾아주고 그 주소를 �
 			return current;
 		}
 	}
-	cout << "저장할 수 있는 메모리가 없습니다." << endl;
+	cout << "오류 : 저장할 수 있는 메모리가 없습니다." << endl;
 
 	return 0;
 }
@@ -48,19 +48,26 @@ void List::deleteNode(Node *orial) //sort함수에서 낙동강오리알Node를 Free시켜주�
 	orial = nullptr;
 }
 
-int List::alloc(int size) // alloc역할
+int List::fAlloc(int size) // alloc역할
 {
 	
 	Node* allocNode = new Node;
+
+	
 	allocNode->data = size;
 	allocNode->state = FULL;
-	Node* findNode = search(size);
+	Node* findNode = fSearch(size);
 	findNode->data = (findNode->data) - size;
 	findNode->before->next = allocNode;
 	allocNode->before = findNode->before;
 	findNode->before = allocNode;
 	allocNode->next = findNode;
 	int addr = findAddr(findNode, size);
+	if (findNode->data == 0 && findNode->state == EMPTY) {
+		findNode->before->next = findNode->next;
+		findNode->next->before = findNode->before;
+		deleteNode(findNode);
+	}
 	return addr;
 	
 }
@@ -69,10 +76,11 @@ int List::findAddr(Node *findNode, int size)
 {
 	int addr = 0;
 	Node* currentNode = head->next;
-	while (currentNode != findNode) {
+	while (currentNode->next != findNode) {
 		addr = addr + (currentNode->data);
 		currentNode = currentNode->next;
 	}
+
 	return addr;
 }
 
@@ -95,8 +103,17 @@ void List::display()
 {
 	Node* currentNode = head->next;
 	while (currentNode->state != TAIL) {
-		cout << "데이터 크기 : " << currentNode->data << " 상태 : " << currentNode->state << "-> ";
-		currentNode = currentNode->next;
+		if (currentNode->state == EMPTY) {
+			cout << "데이터 크기 : " << currentNode->data << " 상태 : " << currentNode->state << "-> ";
+			currentNode = currentNode->next;
+		}
+		else {
+			currentNode = currentNode->next;
+			if (currentNode->state == TAIL) {
+				cout << "메모리 공간을 다 사용했습니다" << endl;
+			}
+		}
+		
 	}
 	cout << endl;
 }

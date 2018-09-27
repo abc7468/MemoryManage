@@ -16,9 +16,9 @@ private:
 	Node* head;
 	Node* tail;
 protected:
-	Node* search(int);
+	Node* fSearch(int);
 	void sort(Node*);
-	int alloc(int);
+	int fAlloc(int);
 	int findAddr(Node*, int);
 	int ffree(int);
 	void deleteNode(Node*);

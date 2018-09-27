@@ -24,10 +24,9 @@ Node* List::search(int size) // 저장 가능한 메모리가 있는지 찾아주고 그 주소를 �
 	return 0;
 }
 
-int List::sort() // 이어진 EMPTYNODE를 합쳐주는 함수
+void List::sort(Node* orial) // 이어진 EMPTYNODE를 합쳐주는 함수
 {
 	Node* currentNode = head;
-	Node* orial = new Node;
 	while (currentNode->next != tail) {
 		if (currentNode->state == EMPTY && currentNode->next->state == EMPTY) {
 			orial = currentNode;
@@ -38,7 +37,6 @@ int List::sort() // 이어진 EMPTYNODE를 합쳐주는 함수
 			currentNode = currentNode->next;
 		}
 	}
-	return 0;
 }
 
 void List::deleteNode(Node *orial) //sort함수에서 낙동강오리알Node를 Free시켜주는 함수
@@ -78,11 +76,26 @@ int List::findAddr(Node *findNode, int size)
 	return addr;
 }
 
+int List::ffree(int size)
+{
+	int addr = 0;
+	Node* currentNode = head->next;
+	while (currentNode->state != TAIL) {
+		addr = addr + (currentNode->data);
+		currentNode = currentNode->next;
+		if (addr == size) {
+			currentNode->state = EMPTY;
+			sort(currentNode);
+			return 0;
+		}
+	}
+}
+
 void List::display()
 {
 	Node* currentNode = head->next;
 	while (currentNode->state != TAIL) {
-		cout << "데이터 크기 : " << currentNode->data << "상태 : " << currentNode->state << "-> ";
+		cout << "데이터 크기 : " << currentNode->data << " 상태 : " << currentNode->state << "-> ";
 		currentNode = currentNode->next;
 	}
 	cout << endl;

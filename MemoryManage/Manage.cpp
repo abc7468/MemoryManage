@@ -11,6 +11,12 @@ int Manage::myalloc(int size)
 	return addr;
 }
 
+void Manage::myfree(int addr)
+{
+	List::ffree(addr);
+	List::display();
+}
+
 Manage::~Manage()
 {
 }

@@ -4,7 +4,8 @@ class Manage : public List
 {
 public:
 	Manage(int size) :List(size) {};
-	int firstFitMyalloc(int);
+	int myalloc_FF(int);
+	int myalloc_BF(int);
 	void myfree(int);
 	~Manage();
 };

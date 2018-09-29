@@ -24,6 +24,32 @@ Node* List::fSearch(int size) // 저장 가능한 메모리가 있는지 찾아주고 그 주소를 
 	return 0;
 }
 
+Node * List::bSearch(int size)
+{
+	Node* current = head->next;
+	Node* tempNode = new Node;
+	int temp = INT_MAX;
+	int check = 0;
+
+	while (current->state != TAIL) {
+		if (current->state == EMPTY && current->data == size) {
+			return current;
+		}
+		else if (current->state == EMPTY && current->data > size) {
+			if (temp > current->data - size) {
+				temp = current->data - size;
+				tempNode = current;
+				current = current->next;
+			}
+			
+		}
+		else {
+			current = current->next;
+		}
+	}
+	return tempNode;
+}
+
 void List::sort(Node* orial) // 이어진 EMPTYNODE를 합쳐주는 함수
 {
 	Node* currentNode = head;
@@ -72,11 +98,33 @@ int List::fAlloc(int size) // alloc역할
 	
 }
 
+int List::bAlloc(int size)
+{
+	Node* allocNode = new Node;
+
+	
+	allocNode->data = size;
+	allocNode->state = FULL;
+	Node* findNode = bSearch(size);
+	findNode->data = (findNode->data) - size;
+	findNode->before->next = allocNode;
+	allocNode->before = findNode->before;
+	findNode->before = allocNode;
+	allocNode->next = findNode;
+	int addr = findAddr(findNode, size);
+	if (findNode->data == 0 && findNode->state == EMPTY) {
+		findNode->before->next = findNode->next;
+		findNode->next->before = findNode->before;
+		deleteNode(findNode);
+	}
+	return addr;
+}
+
 int List::findAddr(Node *findNode, int size)
 {
 	int addr = 0;
 	Node* currentNode = head->next;
-	while (currentNode->next != findNode) {
+	while (currentNode != findNode) {
 		addr = addr + (currentNode->data);
 		currentNode = currentNode->next;
 	}
@@ -90,13 +138,15 @@ int List::ffree(int size)
 	Node* currentNode = head->next;
 	while (currentNode->state != TAIL) {
 		addr = addr + (currentNode->data);
-		currentNode = currentNode->next;
 		if (addr == size) {
 			currentNode->state = EMPTY;
 			sort(currentNode);
 			return 0;
 		}
+		currentNode = currentNode->next;
+
 	}
+	return 0;
 }
 
 void List::display()
@@ -109,9 +159,7 @@ void List::display()
 		}
 		else {
 			currentNode = currentNode->next;
-			if (currentNode->state == TAIL) {
-				cout << "메모리 공간을 다 사용했습니다" << endl;
-			}
+
 		}
 		
 	}

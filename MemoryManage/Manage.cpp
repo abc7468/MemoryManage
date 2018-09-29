@@ -4,9 +4,16 @@
 
 
 
-int Manage::firstFitMyalloc(int size)
+int Manage::myalloc_FF(int size)
 {
 	int addr = List::fAlloc(size);
+	List::display();
+	return addr;
+}
+
+int Manage::myalloc_BF(int size)
+{
+	int addr = List::bAlloc(size);
 	List::display();
 	return addr;
 }

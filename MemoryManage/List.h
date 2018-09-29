@@ -17,8 +17,10 @@ private:
 	Node* tail;
 protected:
 	Node* fSearch(int);
+	Node* bSearch(int);
 	void sort(Node*);
 	int fAlloc(int);
+	int bAlloc(int);
 	int findAddr(Node*, int);
 	int ffree(int);
 	void deleteNode(Node*);

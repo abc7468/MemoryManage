@@ -7,6 +7,7 @@ public:
 	int myalloc_FF(int);
 	int myalloc_BF(int);
 	void myfree(int);
+	void displayAll();
 	~Manage();
 };
 

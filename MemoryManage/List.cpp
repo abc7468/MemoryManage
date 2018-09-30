@@ -1,5 +1,6 @@
 #include "List.h"
 #include<iostream>
+#include<Windows.h>
 
 #define HEAD 100
 #define TAIL 101
@@ -35,12 +36,13 @@ Node * List::bSearch(int size)
 		if (current->state == EMPTY && current->data == size) {
 			return current;
 		}
-		else if (current->state == EMPTY && current->data > size) {
-			if (temp > current->data - size) {
+		else if (current->state == EMPTY && current->data - size < temp) {
+			if (current->data - size >= 0) {
 				temp = current->data - size;
 				tempNode = current;
-				current = current->next;
 			}
+			current = current->next;
+			
 			
 		}
 		else {
@@ -108,7 +110,7 @@ int List::bAlloc(int size)
 	Node* findNode = bSearch(size);
 	findNode->data = (findNode->data) - size;
 	findNode->before->next = allocNode;
-	allocNode->before = findNode->before;
+	allocNode->before = findNode->before;	
 	findNode->before = allocNode;
 	allocNode->next = findNode;
 	int addr = findAddr(findNode, size);
@@ -124,7 +126,7 @@ int List::findAddr(Node *findNode, int size)
 {
 	int addr = 0;
 	Node* currentNode = head->next;
-	while (currentNode != findNode) {
+	while (currentNode->next != findNode) {
 		addr = addr + (currentNode->data);
 		currentNode = currentNode->next;
 	}
@@ -132,21 +134,22 @@ int List::findAddr(Node *findNode, int size)
 	return addr;
 }
 
-int List::ffree(int size)
+void List::ffree(int size)
 {
 	int addr = 0;
 	Node* currentNode = head->next;
 	while (currentNode->state != TAIL) {
-		addr = addr + (currentNode->data);
 		if (addr == size) {
 			currentNode->state = EMPTY;
 			sort(currentNode);
-			return 0;
+			return;
 		}
+		addr = addr + (currentNode->data);
 		currentNode = currentNode->next;
-
 	}
-	return 0;
+	cout << "오류 : free할 노드가 존재하지 않습니다" << endl;
+
+	return;
 }
 
 void List::display()
@@ -154,8 +157,13 @@ void List::display()
 	Node* currentNode = head->next;
 	while (currentNode->state != TAIL) {
 		if (currentNode->state == EMPTY) {
-			cout << "데이터 크기 : " << currentNode->data << " 상태 : " << currentNode->state << "-> ";
+			cout << " s i z e  : " << currentNode->data << endl;
+			Sleep(200);
+			cout << "s t a t e : EMPTY" << endl;
+			Sleep(200);
+			cout << "      ▼" << endl;
 			currentNode = currentNode->next;
+			Sleep(1000);
 		}
 		else {
 			currentNode = currentNode->next;
@@ -163,27 +171,62 @@ void List::display()
 		}
 		
 	}
-	cout << endl;
+	Sleep(300);
+	cout << "     마침" << endl;
+	Sleep(1000);
+	cout << endl << endl << "-----------------------------------------------" << endl;
+
+}
+
+void List::displayAll()
+{
+	cout << "메모리 공간에 저장된 모든 메모리를 보여드립니다." << endl;
+	Node* currentNode = head->next;
+	while (currentNode->state != TAIL) {
+			cout << " s i z e  : " << currentNode->data << endl;
+			Sleep(200);
+			if (currentNode->state == EMPTY) {
+				cout << "s t a t e : EMPTY" << endl;
+			}
+			else if (currentNode->state == FULL) {
+				cout << "s t a t e : FULL" << endl;
+			}
+			Sleep(200);
+			cout << "      ▼" << endl;
+			currentNode = currentNode->next;
+			Sleep(1000);
+
+	}
+	Sleep(300);
+	cout << "     마침" << endl;
+	Sleep(1000);
+	cout << endl << endl << "-----------------------------------------------" << endl;
+
 }
 
 List::List(int MAX)
 {
-	Node* memoryNode = new Node;
-	head = new Node;
-	tail = new Node;
-	head->before = nullptr;
-	head->state = HEAD;
-	head->data = INT_MAX;
-	head->next = memoryNode;
-	memoryNode->before = head;
-	memoryNode->data = MAX;
-	memoryNode->state = EMPTY;
-	memoryNode->next = tail;
-	tail->before = memoryNode;
-	tail->data = INT_MAX;
-	tail->state = TAIL;
-	tail->next = nullptr;
-	cout << "최대 메모리 값을 " << MAX << "으로 지정하셨습니다." << endl;
+	if (MAX <= 0) {
+		cout << "오류 : 0이상의 값을 입력하시오" << endl;
+	}
+	else{
+		Node* memoryNode = new Node;
+		head = new Node;
+		tail = new Node;
+		head->before = nullptr;
+		head->state = HEAD;
+		head->data = INT_MAX;
+		head->next = memoryNode;
+		memoryNode->before = head;
+		memoryNode->data = MAX;
+		memoryNode->state = EMPTY;
+		memoryNode->next = tail;
+		tail->before = memoryNode;
+		tail->data = INT_MAX;
+		tail->state = TAIL;
+		tail->next = nullptr;
+		cout << "최대 메모리 값을 " << MAX << "으로 지정하셨습니다." << endl<<endl<<endl;
+	}
 }
 
 
